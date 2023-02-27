@@ -1,11 +1,11 @@
 # get job configurations from jenkins.fleet.ad and grep for github.fleet.ad in them
 
-JENKINS_URL="jenkins.fleet.ad"
-OLD_ORG="$1"
-NEW_ORG="$2"
-CRED_ID="$3"
-GHES_URL="github.fleet.ad\/$OLD_ORG"
-GHEC_URL="github.com\/$NEW_ORG"
+JENKINS_URL="$1"
+OLD_ORG="$2"
+NEW_ORG="$3"
+CRED_ID="$4"
+GHES_URL="github.fleet.ad"
+GHEC_URL="github.com"
 while IFS= read -r JOB_NAME; do
     JOB_NAME_FILE=${JOB_NAME////.}
     JOB_NAME=${JOB_NAME/////job/}
@@ -17,9 +17,10 @@ while IFS= read -r JOB_NAME; do
     lines_with_ghes_link=$(cat "$JOB_NAME_FILE".xml | grep "github.fleet.ad")
 
     # Comment this block if you don't want to update the config
-    sed -i "s/$GHES_URL/$GHEC_URL/g" jobconfig.xml
-    sed -i "s/http:\/\/$GHEC_URL/https:\/\/$GHEC_URL/g" jobconfig.xml
-    sed -i "s/<credentialsId>.*<\/credentialsId>/<credentialsId>$CRED_ID<\/credentialsId>/g" jobconfig.xml
+    sed -i "s/$GHES_URL\/$OLD_ORG/$GHEC_URL\/$NEW_ORG/g" "$JOB_NAME_FILE".xml
+    sed -i "s/$GHES_URL:$OLD_ORG/$GHEC_URL:$NEW_ORG/g" "$JOB_NAME_FILE".xml
+    sed -i "s/http:\/\/$GHEC_URL/https:\/\/$GHEC_URL/g" "$JOB_NAME_FILE".xml
+    sed -i "s/<credentialsId>.*<\/credentialsId>/<credentialsId>$CRED_ID<\/credentialsId>/g" "$JOB_NAME_FILE".xml
     curl --user "$JENKINS_USER":"$JENKINS_API_TOKEN" -X POST "$JOB_URL" -H 'Content-Type: application/xml' --data-binary "@$JOB_NAME_FILE.xml"
     # ----
 
