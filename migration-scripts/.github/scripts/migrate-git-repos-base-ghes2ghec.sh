@@ -99,11 +99,30 @@ push_to_ghec() {
     fi
     git remote set-url origin "$DESTINATION_REPO_URL"
     git push --mirror
-    push_status=$?
-    if [ $push_status -ne 0 ]; then
+    GHEC_COMMITS_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" -X HEAD -I "https://api.github.com/repos/$GHEC_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i "link:" | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
+    GHES_COMMITS_COUNT=$(curl -s -H "Authorization: token $GHES_USER_PASSWORD" -X HEAD -I "http://github.fleet.ad/api/v3/repos/$GHES_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i 'link:' | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
+    GHEC_BRANCH_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" "https://api.github.com/repos/$GHEC_ORG_NAME/$REPO_NAME/branches" | jq '. | length')
+    GHES_BRANCH_COUNT=$(curl -s -H "Authorization: token $GHES_USER_PASSWORD" "http://github.fleet.ad/api/v3/repos/$GHES_ORG_NAME/$REPO_NAME/branches" | jq '. | length')
+
+    if [ $GHEC_COMMITS_COUNT -ne 0 ]; then
+        if [ $GHEC_COMMITS_COUNT -ne $GHES_COMMITS_COUNT ]; then
+            echo "ERROR: Commits not matched $REPO_NAME"
+            exit 1
+        fi
+        if [ $GHEC_BRANCH_COUNT -ne $GHES_BRANCH_COUNT ]; then
+            echo "ERROR: Branches count not matched $REPO_NAME"
+            exit 1
+        fi
+    else
         echo "ERROR: Failed to push repo $DESTINATION_REPO_URL"
         exit 1
     fi
+
+    # push_status=$?
+    # if [ $push_status -ne 0 ]; then
+    # echo "ERROR2: Failed to push repo $DESTINATION_REPO_URL"
+    # exit 1
+    # fi
     cd ..
 }
 
