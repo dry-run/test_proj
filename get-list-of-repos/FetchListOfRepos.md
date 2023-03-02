@@ -1,4 +1,4 @@
-1.  Execute below line
+1.  Execute below line in git bash script
 
         $env:GITHUB_TOKEN = "<YOUR_TOKEN_HERE>"
 
