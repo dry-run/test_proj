@@ -1,4 +1,8 @@
-# get job configurations from jenkins.fleet.ad and grep for github.fleet.ad in them
+#!/bin/bash
+
+# This script will get all the jobs from a Jenkins instance and update the config.xml for each job
+# Usage: ./update_jenkins_jobs.sh <JENKINS_URL> <OLD_ORG> <NEW_ORG> <CRED_ID>
+# Example: ./update_jenkins_jobs.sh jenkins.fleet.ad fleet-ad fleet-ad 1
 
 JENKINS_URL="$1"
 OLD_ORG="$2"
@@ -13,17 +17,43 @@ while IFS= read -r JOB_NAME; do
     echo "JOB_NAME $JOB_NAME"
     JOB_URL="https://$JENKINS_URL/job/$JOB_NAME/config.xml"
     echo "JOB_URL $JOB_URL"
+
     curl -k --user "$JENKINS_USER":"$JENKINS_API_TOKEN" -X GET "$JOB_URL" -o "$JOB_NAME_FILE".xml
     lines_with_ghes_link=$(cat "$JOB_NAME_FILE".xml | grep "github.fleet.ad")
 
-    # Comment this block if you don't want to update the config
+    noCredId=$(grep -c "credentialsId" "$JOB_NAME_FILE".xml)
+    hasSSHAgent=$(grep -c "<com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper" "$JOB_NAME_FILE".xml)
+    userRemoteConfigsEndTag=$(grep -c "<\/hudson.plugins.git.UserRemoteConfig>" "$JOB_NAME_FILE".xml)
+    SCMNull=$(grep -c "hudson.scm.NullSCM" "$JOB_NAME_FILE".xml)
+    buildWrappersEmptyTag=$(grep -c "<buildWrappers*\/>" "$JOB_NAME_FILE".xml)
+
+    echo "$noCredId"
+    echo "$hasSSHAgent"
+    echo "$buildWrappersEmptyTag"
+
+    # Comment this block if you don't want to update the config on Jenkins server
     sed -i "s/$GHES_URL\/$OLD_ORG/$GHEC_URL\/$NEW_ORG/g" "$JOB_NAME_FILE".xml
     sed -i "s/$GHES_URL:$OLD_ORG/$GHEC_URL:$NEW_ORG/g" "$JOB_NAME_FILE".xml
     sed -i "s/http:\/\/$GHEC_URL/https:\/\/$GHEC_URL/g" "$JOB_NAME_FILE".xml
     sed -i "s/git@$GHEC_URL:/https:\/\/$GHEC_URL\//g" "$JOB_NAME_FILE".xml
     sed -i "s/<credentialsId>.*<\/credentialsId>/<credentialsId>$CRED_ID<\/credentialsId>/g" "$JOB_NAME_FILE".xml
+
+    if [ "$SCMNull" -eq 1 ]; then
+        echo "SCM is Null"
+        if [ "$hasSSHAgent" -eq 0 ] && [ "$buildWrappersEmptyTag" -eq 1 ]; then
+            echo "No SSHAgent,buildWrappers found"
+            sed -i "s/\(<buildWrappers*\/>\)/<buildWrappers><com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin=\"ssh-agent@1.23\"><credentialIds><string>$CRED_ID<\/string><\/credentialIds><ignoreMissing>false<\/ignoreMissing><\/com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper><\/buildWrappers>/g" "$JOB_NAME_FILE".xml
+        fi
+        if [ "$hasSSHAgent" -eq 0 ] && [ "$buildWrappersEmptyTag" -eq 0 ]; then
+            sed -i "s/\(<\/buildWrappers>\)/<com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin=\"ssh-agent@1.23\"><credentialIds><string>$CRED_ID<\/string><\/credentialIds><ignoreMissing>false<\/ignoreMissing><\/com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper><\/buildWrappers>/g" "$JOB_NAME_FILE".xml
+        fi
+    elif [ "$noCredId" -eq 0 ] && [ "$userRemoteConfigsEndTag" -eq 1 ]; then
+        echo "No buildWrappers found, but found userRemoteConfigs"
+        sed -i "s/\(<\/hudson.plugins.git.UserRemoteConfig>\)/<credentialsId>$CRED_ID<\/credentialsId><\/hudson.plugins.git.UserRemoteConfig>/g" "$JOB_NAME_FILE".xml
+    fi
+
+    # Post the updated config.xml to Jenkins
     curl -k --user "$JENKINS_USER":"$JENKINS_API_TOKEN" -X POST "$JOB_URL" -H 'Content-Type: application/xml' --data-binary "@$JOB_NAME_FILE.xml"
-    # ----
 
     echo "$JOB_URL|$lines_with_ghes_link" >>jenkins_dependencies_report.txt
     echo -e "" >>jenkins_dependencies_report.txt
