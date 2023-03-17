@@ -1,6 +1,6 @@
-1.  Execute below line in git bash script
+1.  Execute below line in powershell script
 
-        $env:GITHUB_TOKEN = "<YOUR_TOKEN_HERE>"
+        $env:GITHUB_TOKEN = "<YOUR_GHES_TOKEN_HERE>"
 
 2.  Run the script by executing
 
