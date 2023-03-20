@@ -1,4 +1,5 @@
 <h2>Script to Fetch list of Repositories</h2>
+
 1.  Update this variable in script "$ghesHost" with GHES name.
 
         Example: $ghesHost = "github.abc.ad"
@@ -11,7 +12,8 @@
 
         ./fetch-list-of-repos
 
-4.  <h3>Convert the Json file to csv file</h3>
+4.  Convert the Json file to csv file
+
     Once we get the data from above command after it is executed successfully then run below command to set $json variable
 
         $json = Get-Content -Raw -Path "C:\Users\<path>\org-repos-stats.json" | ConvertFrom-Json
@@ -26,6 +28,10 @@
 
         export GHES_TOKEN="<YOUR_GHES_TOKEN_HERE>"
 
-2.  Run the script by executing
+2.  Add the list of repositories to the "repo-list" file.
+
+        vi repo-list
+
+3.  Run the script by executing
 
         ./get-repos-list-of-open-PR.sh
