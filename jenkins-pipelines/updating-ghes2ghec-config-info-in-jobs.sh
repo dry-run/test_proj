@@ -35,7 +35,7 @@ while IFS= read -r JOB_NAME; do
     sed -i "s/$GHES_URL\/$OLD_ORG/$GHEC_URL\/$NEW_ORG/g" "$JOB_NAME_FILE".xml
     sed -i "s/$GHES_URL:$OLD_ORG/$GHEC_URL:$NEW_ORG/g" "$JOB_NAME_FILE".xml
     sed -i "s/http:\/\/$GHEC_URL/https:\/\/$GHEC_URL/g" "$JOB_NAME_FILE".xml
-    sed -i "s/git@$GHEC_URL:/https:\/\/$GHEC_URL\//g" "$JOB_NAME_FILE".xml
+    ### sed -i "s/git@$GHEC_URL:/https:\/\/$GHEC_URL\//g" "$JOB_NAME_FILE".xml
     sed -i "s/<credentialsId>.*<\/credentialsId>/<credentialsId>$CRED_ID<\/credentialsId>/g" "$JOB_NAME_FILE".xml
 
     if [ "$SCMNull" -eq 1 ]; then
