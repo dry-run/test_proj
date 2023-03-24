@@ -50,11 +50,11 @@ while IFS= read -r JOB_NAME; do
 
     if [ "$SCMNull" -eq 1 ]; then
         echo "SCM is Null"
-        if [ "$hasSSHAgent" -eq 0 ] && [ "$buildWrappersEmptyTag" -eq 1 ]; then
+        if [ "$hasSSHAgent" -eq 0 ] && [ "$buildWrappersEmptyTag" -eq 1 ] && [ "$isSSHUrl" -eq 1 ]; then
             echo "No SSHAgent,buildWrappers found"
             sed -i "s/\(<buildWrappers*\/>\)/<buildWrappers><com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin=\"ssh-agent@1.23\"><credentialIds><string>$CRED_ID<\/string><\/credentialIds><ignoreMissing>false<\/ignoreMissing><\/com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper><\/buildWrappers>/g" "$JOB_NAME_FILE".xml
         fi
-        if [ "$hasSSHAgent" -eq 0 ] && [ "$buildWrappersEmptyTag" -eq 0 ]; then
+        if [ "$hasSSHAgent" -eq 0 ] && [ "$buildWrappersEmptyTag" -eq 0 ] && [ "$isSSHUrl" -eq 1 ]; then
             sed -i "s/\(<\/buildWrappers>\)/<com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper plugin=\"ssh-agent@1.23\"><credentialIds><string>$CRED_ID<\/string><\/credentialIds><ignoreMissing>false<\/ignoreMissing><\/com.cloudbees.jenkins.plugins.sshagent.SSHAgentBuildWrapper><\/buildWrappers>/g" "$JOB_NAME_FILE".xml
         fi
     elif [ "$noCredId" -eq 0 ] && [ "$userRemoteConfigsEndTag" -eq 1 ]; then
