@@ -39,6 +39,9 @@ while IFS= read -r JOB_NAME; do
     if [ "$isSSHUrl" -eq 1 ]; then
         echo "SSH $isSSHUrl"
         CRED_ID=$SSH_CRED_ID
+    elif [ "$isSSHUrl" -eq 0 ]; then
+        echo "HTTP $isSSHUrl"
+        CRED_ID=$HTTP_CRED_ID
     fi
 
     # Comment this block if you don't want to update the config on Jenkins server
