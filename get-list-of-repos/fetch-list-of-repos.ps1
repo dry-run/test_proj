@@ -58,9 +58,15 @@ for ($index = 0; $index -lt $orgReposCount; $index++) {
     $repo = $orgRepos[$index]
     $repoId = $orgRepos[$index].full_name
     Write-Output "Processing repo $index / $orgReposCount"
-    $url = "http://$ghesHost/api/v3/repos/$repoId/commits"
+    $url = "http://$ghesHost/api/v3/repos/$repoId/commits?per_page=1"
     Write-Output "Processing $url"
     $repoCommits = curl -Headers $headers $url | ConvertFrom-Json
+    try {
+        $GHES_COMMITS_COUNT = ((curl -Uri $url -Headers @{"Authorization" = "token $githubToken" } -Method Head).Headers["Link"] -split ',')[1] -replace '.*page=([0-9]+).*', '$1'
+    }
+    catch {
+        $GHES_COMMITS_COUNT = 0
+    }
     $orgRepoStats += @{
         type         = $repo.owner.type;
         login        = $repo.owner.login;
@@ -69,7 +75,8 @@ for ($index = 0; $index -lt $orgReposCount; $index++) {
         repoId       = $repoId;
         commit_date  = $repoCommits[0].commit.author.date;
         size         = $repo.size;
-        commit_count = $repoCommits.count
+        commit_count = $GHES_COMMITS_COUNT;
+        url          = "https://$ghesHost/api/v3/repos/$repoId"
     }
 }
 
