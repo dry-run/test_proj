@@ -1,4 +1,4 @@
-Used below article for ghe-importer
+Used below article for gei-importer
 
     https://docs.github.com/en/migrations/using-github-enterprise-importer/migrating-organizations-with-github-enterprise-importer/migrating-organizations-from-githubcom-to-github-enterprise-cloud#step-1-install-the-gei-extension-of-the-github-cli
 
