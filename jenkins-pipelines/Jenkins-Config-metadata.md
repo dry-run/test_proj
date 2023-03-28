@@ -32,7 +32,7 @@ Here is the script file to download the config.xml file(s) with job name and als
 
 Add all Jenkins job names into this file <b>jenkins_jobs_list.txt</b>
 
-![Alt text](/jenkins-jobs-list.png "Optional title")
+![Alt text](/jenkins-jobs-list.png "List of Jenkins jobs")
 
 > Note: Each job name should be added in new line
 
@@ -40,7 +40,7 @@ Replace the _JENKINS_URL, JENKINS_USER_ and _JENKINS_API_TOKEN_ variables with t
 
     ./download-config-file.sh <JENKINS_URL> <JENKINS_USER> <JENKINS_API_TOKEN> <GHES_URL>
 
-![Alt text](/jenkins-job-configs.png "Optional title")
+![Alt text](/jenkins-job-configs.png "List of downloaded config files")
 
 > <h2>Update Jenkins config from GHES URL(s) to GHEC URL(s)</h2>
 
