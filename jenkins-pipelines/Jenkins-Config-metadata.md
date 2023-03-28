@@ -21,7 +21,7 @@ This script uses the <b>Jenkins.instance</b> method to get the instance of the J
 
 You can run this script in a Jenkins Groovy script console or in a Jenkinsfile using the script step.
 
-<h2>To download config.xml of Jenkins jobs </h2>
+> <h2>To download config.xml of Jenkins jobs </h2>
 
 Here is the script file to download the config.xml file(s) with job name and also prints all job names with scm links into "jenkins_dependencies_report.txt"
 

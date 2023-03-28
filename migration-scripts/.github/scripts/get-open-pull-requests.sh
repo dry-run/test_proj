@@ -1,6 +1,6 @@
 #!/bin/bash 
-GHES_HOST="<your-ghes-host>"
-ORG_NAME="<your-org-name>"
+GHES_HOST="$1"
+ORG_NAME="$2"
 ACCESS_TOKEN="<your-access-token>"
 API_ENDPOINT="https://$GHES_HOST/api/v3/orgs/$ORG_NAME/repos?type=all&per_page=100&page=1"
 # Retrieve a list of repositories with open pull requests
