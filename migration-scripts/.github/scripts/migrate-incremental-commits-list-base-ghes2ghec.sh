@@ -42,7 +42,7 @@ migrate_multiple_repos() {
     printf '=%.0s' {1..100} >>"$MIGRATION_LOG_FILE_NAME"
     echo -e "\n" >>"$MIGRATION_LOG_FILE_NAME"
     while IFS= read -r REPO_NAME; do
-        ./.github/scripts/Incremental_commits.sh $REPO_NAME $GHES_USER_NAME $GHES_USER_PASSWORD $GHES_ORG_NAME $GHES_HOST $GHEC_USER_NAME $GHEC_USER_PAT $GHEC_ORG_NAME $GHEC_MAIN_BRANCH
+        ./Incremental_commits.sh $REPO_NAME $GHES_USER_NAME $GHES_USER_PASSWORD $GHES_ORG_NAME $GHES_HOST $GHEC_USER_NAME $GHEC_USER_PAT $GHEC_ORG_NAME $GHEC_MAIN_BRANCH
         MIGRATE_STATUS=$?
         if [ $MIGRATE_STATUS -ne 0 ]; then
             FAILED_REPOS+=("$REPO_NAME")
