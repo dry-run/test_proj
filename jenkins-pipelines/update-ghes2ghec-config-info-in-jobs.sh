@@ -2,17 +2,17 @@
 
 # This script will get all the jobs from a Jenkins instance and update the config.xml for each job
 # Usage: ./update_jenkins_jobs.sh <JENKINS_URL> <OLD_ORG> <NEW_ORG> <CRED_ID>
-# Example: ./update_jenkins_jobs.sh jenkins.fleet.ad fleet-ad fleet-ad 1
+# Example: ./update_jenkins_jobs.sh jenkins.abc.az test-org demo-org 1 2 demo.abc.az
 
 JENKINS_URL="$1"
 OLD_ORG="$2"
 NEW_ORG="$3"
 SSH_CRED_ID="$4"
 HTTP_CRED_ID="$5"
+GHES_URL="$6"
+GHEC_URL="github.com"
 
 CRED_ID=$HTTP_CRED_ID
-GHES_URL="github.fleet.ad"
-GHEC_URL="github.com"
 
 while IFS= read -r JOB_NAME; do
     JOB_NAME_FILE=${JOB_NAME////.}
@@ -50,8 +50,9 @@ while IFS= read -r JOB_NAME; do
     sed -i "s/$GHES_URL\/$OLD_ORG/$GHEC_URL\/$NEW_ORG/ig" "$JOB_NAME_FILE".xml
     sed -i "s/$GHES_URL:$OLD_ORG/$GHEC_URL:$NEW_ORG/ig" "$JOB_NAME_FILE".xml
     sed -i "s/http:\/\/$GHEC_URL/https:\/\/$GHEC_URL/g" "$JOB_NAME_FILE".xml
-    ### sed -i "s/git@$GHEC_URL:/https:\/\/$GHEC_URL\//g" "$JOB_NAME_FILE".xml
     sed -i "s/<credentialsId>.*<\/credentialsId>/<credentialsId>$CRED_ID<\/credentialsId>/g" "$JOB_NAME_FILE".xml
+    # Use below line if you want to update the SSH Url with Https Url on Jenkins server
+    ### sed -i "s/git@$GHEC_URL:/https:\/\/$GHEC_URL\//g" "$JOB_NAME_FILE".xml
 
     if [ "$SCMNull" -eq 1 ]; then
         echo "SCM is Null"
