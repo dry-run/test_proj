@@ -10,7 +10,3 @@ def jobs = jenkins.getAllItems()
 jobs.each { job ->
     println(job.fullName)
 }
-
-
-
-
