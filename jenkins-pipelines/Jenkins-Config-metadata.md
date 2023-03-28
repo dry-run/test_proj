@@ -1,8 +1,21 @@
-<h2>Print the name of all jobs including jobs inside of a folder and the folders themselves</h2>
+> <h2>Print the name of all jobs including jobs inside of a folder and the folders themselves</h2>
 
 Here's a Groovy script file to fetch all Jenkins jobs:
 
-    get-all-jobs.sh
+Open Jenkins server and copy the code from the file "get-all-jobs.sh" and execute it in "script console"
+
+    import jenkins.model.*
+
+    // Get the instance of the Jenkins object
+    def jenkins = Jenkins.instance
+
+    // Get all jobs from the Jenkins object
+    def jobs = jenkins.getAllItems()
+
+    // Iterate over the jobs and print their names
+    jobs.each { job ->
+        println(job.fullName)
+    }
 
 This script uses the <b>Jenkins.instance</b> method to get the instance of the Jenkins object, and then the <b>getAllItems()</b> method to get all the jobs in Jenkins. It then iterates over each job and prints its full name.
 
@@ -29,7 +42,7 @@ Replace the _JENKINS_URL, JENKINS_USER_ and _JENKINS_API_TOKEN_ variables with t
 
 ![Alt text](/jenkins-job-configs.png "Optional title")
 
-<h2>Update Jenkins config from GHES URL(s) to GHEC URL(s)</h2>
+> <h2>Update Jenkins config from GHES URL(s) to GHEC URL(s)</h2>
 
 In this script, we'll do below
 
@@ -37,7 +50,6 @@ In this script, we'll do below
 - Updates Organization name
 - Updates "http" to "https"
 - Updates CredentialId value
--
 
 you'll need to replace the GHES_URL and GHEC_URL variables with your own GitHub Enterprise Server and GitHub Enterprise Cloud URLs, respectively. You'll also need to update the JENKINS_HOME variable to point to the location of your Jenkins home directory.
 
@@ -48,3 +60,7 @@ you'll need to replace the GHES_URL and GHEC_URL variables with your own GitHub 
     HTTP_CRED_ID="$5"
     GHES_URL="$6"
     GHEC_URL="github.com"
+
+Execute the script using below
+
+    ./update-ghes2ghec-config-info-in-jobs.sh jenkis1.demo.ad demo-org1 demo-org2 123 456 gitabc.demo.ad
