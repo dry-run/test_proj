@@ -23,7 +23,7 @@ You can run this script in a Jenkins Groovy script console or in a Jenkinsfile u
 
 > <h2>To download config.xml of Jenkins jobs </h2>
 
-Here is the script file to download the config.xml file(s) with job name and also prints all job names with scm links into "jenkins_dependencies_report.txt"
+Here is the script file to download the config.xml file(s) with job name and also prints all job names with scm links into "jenkins_dependencies_report.txt". You'll need to replace the JENKINS_URL, JENKINS_USER, JENKINS_API_TOKEN and GHES_URL variables with your own Jenkins credentials and GHES URL, respectively
 
     JENKINS_URL="$1"
     JENKINS_USER="$2"
@@ -41,6 +41,22 @@ Replace the _JENKINS_URL, JENKINS_USER_ and _JENKINS_API_TOKEN_ variables with t
     ./download-config-file.sh <JENKINS_URL> <JENKINS_USER> <JENKINS_API_TOKEN> <GHES_URL>
 
 ![Alt text](/jenkins-job-configs.png "List of downloaded config files")
+
+> <h3>Troubleshoot steps:<h3>
+
+The command you provided is attempting to retrieve the configuration XML of a Jenkins job using the Jenkins API. However, it seems to be returning an HTML response instead of the expected XML.
+
+- There could be a few reasons why this is happening. One possibility is that the URL you are using for the job is incorrect or incomplete. Another possibility is that the Jenkins server is experiencing some issues or misconfiguration.
+
+> To troubleshoot the issue, you could try the following:
+
+- Double-check the URL you are using for the job to make sure it is correct and complete. You can verify the URL by navigating to the job in the Jenkins UI and copying the URL from your browser's address bar.
+
+- Check that the Jenkins user(is case-sensitive) and API token you are using have the necessary permissions to access the job's configuration. You can verify this by trying to access the configuration XML through the Jenkins UI using the same user and token.
+
+- Verify that the Jenkins API is enabled and configured correctly on the Jenkins server. You can do this by navigating to the Jenkins server's configuration page and checking the settings for the "Remote API" and "Security" sections.
+
+- Try accessing the job's configuration XML using a different method or tool, such as a web browser or a Jenkins plugin. This can help you determine if the issue is specific to the curl command or if there is a more general issue with the job's configuration or the Jenkins server.
 
 > <h2>Update Jenkins config from GHES URL(s) to GHEC URL(s)</h2>
 

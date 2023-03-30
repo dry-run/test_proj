@@ -24,9 +24,11 @@
 
 <h2>Script to Fetch list of Repositories with Open Pull Request(s)</h2>
 
-1.  Execute below line in bash script
+1.  Replace the below variables with the appropriate values for your GHES instance
 
-        export GHES_TOKEN="<YOUR_GHES_TOKEN_HERE>"
+        GHES_HOST="$1"
+        ORG_NAME="$2"
+        ACCESS_TOKEN="$3"
 
 2.  Add the list of repositories to the "repo-list" file.
 
@@ -34,4 +36,4 @@
 
 3.  Run the script by executing
 
-        ./get-repos-list-of-open-PR.sh
+        ./get-open-pull-requests.sh github.abc.ad demo-org1 123

@@ -29,9 +29,7 @@ Replace the GHES_USER_NAME, GHES_USER_PASSWORD, GHES_ORG_NAME, GHES_HOST, GHEC_U
 
 > <h2>Incremental commits to Repository</h2>
 
-One option to do incremental commits is to use the git bundles
-
-https://stackoverflow.com/questions/66247810/how-can-i-incrementally-mirror-a-git-repository-via-bundle-files
+One option to do incremental commits is to use the git bundles, we followed this article [here](https://stackoverflow.com/questions/66247810/how-can-i-incrementally-mirror-a-git-repository-via-bundle-files)
 
     # Github Enterprise Server config
     export GHES_USER_NAME="$1"
