@@ -1,3 +1,7 @@
+# this script will fetch the list of repos from a file and fetch the latest commit date for each branch
+# it will then compare the latest commit date with a timestamp and output the repos with new commits
+# it will also output the list of repos with new commits to a csv file
+
 $timestamp = "2023-03-28T23:28:01Z"
 
 $GITHUB_TOKEN = $env:GITHUB_TOKEN
