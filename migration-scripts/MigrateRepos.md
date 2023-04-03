@@ -52,7 +52,7 @@ Replace the GHES_USER_NAME, GHES_USER_PASSWORD, GHES_ORG_NAME, GHES_HOST, GHEC_U
 
         migrate-repos-larger-size.sh
 
-- Creating a Repo on GHEC with the demoRepo1 name
+- Creating a Repo on GHEC (example demoRepo1)
 
        curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GHEC_USER_PAT" -H "X-GitHub-Api-Version: 2022-11-28" -d '{"visibility":"internal","name":"'"demoRepo1"'"}' $API_URL
        $API_URL="https://api.github.com/orgs/$GHEC_ORG_NAME/repos"
