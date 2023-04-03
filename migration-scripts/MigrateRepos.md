@@ -46,7 +46,7 @@ Replace the GHES_USER_NAME, GHES_USER_PASSWORD, GHES_ORG_NAME, GHES_HOST, GHEC_U
 
     ./migrate-incremental-commits-list-base-ghes2ghec.sh ghesuser1 pwd1 demoorg1 github.abc.ad ghecuser1 pwd2 demoorg2
 
-> <h2>Migrate repository with larger size</h2>
+> <h2>Migrate repository with larger size( > 1 GB)</h2>
 
 - Use the below steps to migrate the repositories with larger size
 
