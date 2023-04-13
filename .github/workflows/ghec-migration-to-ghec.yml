@@ -20,6 +20,7 @@ jobs:
 
       - name: Migrate repos
         run: |
+          chmod a+x ./migration-scripts/migrate-repos-from-list-base-ghec2ghec.sh
           ./migration-scripts/migrate-repos-from-list-base-ghec2ghec.sh $GHEC_USER_NAME $GHEC_USER_PAT $GHEC_SOURCE_ORG_NAME $GHEC_TARGET_ORG_NAME $GHEC_MAIN_BRANCH
         env:
           GITHUB_TOKEN: ${{ steps.get_workflow_token.outputs.token }}
