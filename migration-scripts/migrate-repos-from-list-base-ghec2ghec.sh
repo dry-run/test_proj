@@ -37,7 +37,7 @@ migrate_multiple_repos() {
   printf '=%.0s' {1..100} >>"$MIGRATION_LOG_FILE_NAME"
   echo -e "\n" >>"$MIGRATION_LOG_FILE_NAME"
   while IFS= read -r REPO_NAME; do
-    ./migrate-repos-base-ghec2ghec.sh $REPO_NAME $GHEC_USER_NAME $GHEC_USER_PAT $GHEC_SOURCE_ORG_NAME $GHEC_DEST_ORG_NAME $GHEC_MAIN_BRANCH
+    ./migration-scripts/migrate-repos-base-ghec2ghec.sh $REPO_NAME $GHEC_USER_NAME $GHEC_USER_PAT $GHEC_SOURCE_ORG_NAME $GHEC_DEST_ORG_NAME $GHEC_MAIN_BRANCH
     MIGRATE_STATUS=$?
     if [ $MIGRATE_STATUS -ne 0 ]; then
       FAILED_REPOS+=("$REPO_NAME")
