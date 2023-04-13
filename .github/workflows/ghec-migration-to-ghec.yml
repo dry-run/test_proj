@@ -1,4 +1,4 @@
-name: Migrate GHES repo to GitHub
+name: Migrate GHEC Org1 repo to GHEC Org2 repo
 
 on: workflow_dispatch
 
