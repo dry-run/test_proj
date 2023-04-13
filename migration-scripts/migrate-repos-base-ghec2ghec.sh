@@ -77,7 +77,7 @@ push_to_dest_ghec() {
         exit 1
     fi
     git remote set-url origin "$DESTINATION_REPO_URL"
-    git push --mirror
+    git push --all
     GHEC_DEST_COMMITS_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" -X HEAD -I "https://api.github.com/repos/$GHEC_DEST_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i "link:" | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
     GHEC_SOURCE_COMMITS_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" -X HEAD -I "https://api.github.com/repos/$GHEC_SOURCE_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i 'link:' | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
     GHEC_DEST_BRANCH_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" "https://api.github.com/repos/$GHEC_DEST_ORG_NAME/$REPO_NAME/branches" | jq '. | length')
