@@ -32,7 +32,6 @@ configure_source_and_destination() {
     export GHEC_SOURCE_ORG_NAME="$4"
     export GHEC_DEST_ORG_NAME="$5"
     export GHEC_MAIN_BRANCH="$6"
-
     echo "Source: https://$GHEC_USER_NAME@github.com/$GHEC_SOURCE_ORG_NAME/$REPO_NAME.git"
     echo "Destination: https://$GHEC_USER_NAME@github.com/$GHEC_DEST_ORG_NAME/$REPO_NAME.git"
 }
@@ -40,7 +39,7 @@ configure_source_and_destination() {
 clone_from_source_ghec() {
 
     # Use http for EF instead of https
-    SOURCE_REPO_URL= https://github.com/$GHEC_SOURCE_ORG_NAME/$REPO_NAME.git
+    SOURCE_REPO_URL="https://github.com/$GHEC_SOURCE_ORG_NAME/$REPO_NAME.git"
     git clone --mirror "$SOURCE_REPO_URL"
     clone_status=$?
     if [ $clone_status -ne 0 ]; then
