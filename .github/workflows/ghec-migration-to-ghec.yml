@@ -8,6 +8,7 @@ env:
   GHEC_SOURCE_ORG_NAME: ${{ secrets.GHEC_SOURCE_ORG_NAME }}
   GHEC_TARGET_ORG_NAME: ${{ secrets.GHEC_TARGET_ORG_NAME }}
   GHEC_MAIN_BRANCH: ${{ secrets.GHEC_MAIN_BRANCH }}
+  GH_TOKEN: ${{ github.token }}
 
 jobs:
   GHES-to-GitHub:

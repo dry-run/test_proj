@@ -65,11 +65,12 @@ push_to_dest_ghec() {
     delete_existing_ghec_repo_targetOrg
 
     DESTINATION_REPO_URL=https://$GHEC_USER_NAME:$GHEC_USER_PAT@github.com/$GHEC_DEST_ORG_NAME/$REPO_NAME.git
-    #  gh repo create "$GHEC_DEST_ORG_NAME"/"$REPO_NAME" --internal
+
+    gh repo create "$GHEC_DEST_ORG_NAME"/"$REPO_NAME" --internal
 
     # Use Curl if you don't have gh cli installed
-    API_URL="https://api.github.com/$GHEC_DEST_ORG_NAME/$REPO_NAME"
-    curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GHEC_USER_PAT" -H "X-GitHub-Api-Version: 2022-11-28" -d '{"visibility":"internal","name":"'"$REPO_NAME"'"}' $API_URL
+    # API_URL="https://api.github.com/$GHEC_DEST_ORG_NAME/$REPO_NAME"
+    # curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GHEC_USER_PAT" -H "X-GitHub-Api-Version: 2022-11-28" -d '{"visibility":"internal","name":"'"$REPO_NAME"'"}' $API_URL
 
     create_status=$?
     if [ $create_status -ne 0 ]; then
