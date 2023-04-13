@@ -1,6 +1,7 @@
 # creating a Repo on GHEC with the demoRepo1 name
-curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GHEC_USER_PAT" -H "X-GitHub-Api-Version: 2022-11-28" -d '{"visibility":"internal","name":"'"demoRepo1"'"}' $API_URL
 $API_URL="https://api.github.com/orgs/$GHEC_ORG_NAME/repos"
+curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GHEC_USER_PAT" -H "X-GitHub-Api-Version: 2022-11-28" -d '{"visibility":"internal","name":"'"demoRepo1"'"}' $API_URL
+
 
 #use normal clone instead of mirror clone to clone Repo from GHES
 git clone <ghes-repo-url>

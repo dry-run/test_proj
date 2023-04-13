@@ -56,7 +56,7 @@ clone_from_source_ghec() {
 delete_existing_ghec_repo_targetOrg() {
     # Delete existing repo in Github Enterprise Cloud
     if [ "$GHEC_DELETE_REPO_BEFORE_CREATE" == "true" ]; then
-        gh repo delete "$GHEC_DEST_ORG_NAME"/"$REPO_NAME" --confirm || true
+        gh repo delete "$GHEC_DEST_ORG_NAME"/"$REPO_NAME" --yes || true
     fi
 }
 
@@ -68,7 +68,7 @@ push_to_dest_ghec() {
     #  gh repo create "$GHEC_DEST_ORG_NAME"/"$REPO_NAME" --internal
 
     # Use Curl if you don't have gh cli installed
-    API_URL="https://api.github.com/orgs/$GHEC_DEST_ORG_NAME/repos"
+    API_URL="https://api.github.com/$GHEC_DEST_ORG_NAME/$REPO_NAME"
     curl -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GHEC_USER_PAT" -H "X-GitHub-Api-Version: 2022-11-28" -d '{"visibility":"internal","name":"'"$REPO_NAME"'"}' $API_URL
 
     create_status=$?
