@@ -20,8 +20,9 @@ START_TIME=$(date +%s)
 set -o xtrace
 
 # Read all migration configuration
-unset $(grep -v '^#' ./migration-config | sed -E 's/(.*)=.*/\1/' | xargs)
-export $(grep -v '^#' ./migration-config | xargs)
+chmod a+x ./migration-scripts/migration-config
+unset $(grep -v '^#' ./migration-scripts/migration-config | sed -E 's/(.*)=.*/\1/' | xargs)
+export $(grep -v '^#' ./migration-scripts/migration-config | xargs)
 
 configure_source_and_destination() {
 
