@@ -72,7 +72,10 @@ push_to_dest_ghec() {
     # Use Curl if you don't have gh cli installed
     API_URL="https://api.github.com/orgs/$GHEC_DEST_ORG_NAME/repos"
     echo "API_URL: $API_URL"
-    curl -H "Authorization: token $GHEC_USER_PAT" $API_URL -d '{"name":"'"$REPO_NAME"'"}'
+
+    curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GHEC_USER_PAT" -H "X-GitHub-Api-Version: 2022-11-28" $API_URL -d '{"name":"'"$REPO_NAME"'"}'
+
+    # curl -H "Authorization: Bearer $GHEC_USER_PAT" $API_URL -d '{"name":"'"$REPO_NAME"'"}'
 
     create_status=$?
     if [ $create_status -ne 0 ]; then
@@ -81,10 +84,10 @@ push_to_dest_ghec() {
     fi
     git remote set-url origin "$DESTINATION_REPO_URL"
     git push
-    GHEC_DEST_COMMITS_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" -X HEAD -I "https://api.github.com/repos/$GHEC_DEST_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i "link:" | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
-    GHEC_SOURCE_COMMITS_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" -X HEAD -I "https://api.github.com/repos/$GHEC_SOURCE_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i 'link:' | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
-    GHEC_DEST_BRANCH_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" "https://api.github.com/repos/$GHEC_DEST_ORG_NAME/$REPO_NAME/branches" | jq '. | length')
-    GHEC_SOURCE_BRANCH_COUNT=$(curl -s -H "Authorization: token $GHEC_USER_PAT" "https://api.github.com/repos/$GHEC_SOURCE_ORG_NAME/$REPO_NAME/branches" | jq '. | length')
+    GHEC_DEST_COMMITS_COUNT=$(curl -s -H "Authorization: Bearer $GHEC_USER_PAT" -X HEAD -I "https://api.github.com/repos/$GHEC_DEST_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i "link:" | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
+    GHEC_SOURCE_COMMITS_COUNT=$(curl -s -H "Authorization: Bearer $GHEC_USER_PAT" -X HEAD -I "https://api.github.com/repos/$GHEC_SOURCE_ORG_NAME/$REPO_NAME/commits?per_page=1" | grep -i 'link:' | awk '{print $4}' | sed 's/.*page=\([0-9]*\)>;.*/\1/')
+    GHEC_DEST_BRANCH_COUNT=$(curl -s -H "Authorization: Bearer $GHEC_USER_PAT" "https://api.github.com/repos/$GHEC_DEST_ORG_NAME/$REPO_NAME/branches" | jq '. | length')
+    GHEC_SOURCE_BRANCH_COUNT=$(curl -s -H "Authorization: Bearer $GHEC_USER_PAT" "https://api.github.com/repos/$GHEC_SOURCE_ORG_NAME/$REPO_NAME/branches" | jq '. | length')
 
     if [ $GHEC_DEST_COMMITS_COUNT -ne 0 ]; then
         if [ $GHEC_DEST_COMMITS_COUNT -ne $GHEC_SOURCE_COMMITS_COUNT ]; then
