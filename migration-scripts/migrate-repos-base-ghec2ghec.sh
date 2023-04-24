@@ -64,7 +64,7 @@ push_to_dest_ghec() {
 
     delete_existing_ghec_repo_targetOrg
 
-    DESTINATION_REPO_URL=https://$GHEC_USER_NAME:$GHEC_USER_PAT@github.com/$GHEC_DEST_ORG_NAME/$REPO_NAME.git
+    DESTINATION_REPO_URL="https://$GHEC_USER_NAME:$GHEC_USER_PAT@github.com/$GHEC_DEST_ORG_NAME/$REPO_NAME.git"
 
     #create repo in GHEC
     #gh repo create "$GHEC_DEST_ORG_NAME"/"$REPO_NAME" --internal
