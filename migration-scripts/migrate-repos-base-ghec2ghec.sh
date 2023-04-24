@@ -70,7 +70,7 @@ push_to_dest_ghec() {
     #gh repo create "$GHEC_DEST_ORG_NAME"/"$REPO_NAME" --internal
 
     # Use Curl if you don't have gh cli installed
-    API_URL="https://api.github.com/$GHEC_DEST_ORG_NAME/repos"
+    API_URL="https://api.github.com/orgs/$GHEC_DEST_ORG_NAME/repos"
     echo "API_URL: $API_URL"
     curl -H "Authorization: token $GHEC_USER_PAT" $API_URL -d '{"name":"'"$REPO_NAME"'"}'
 
