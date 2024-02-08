@@ -108,20 +108,47 @@ push_to_dest_ghec() {
     cd ..
 }
 
+# Main Flow
+
+# Call the configure_source_and_destination function and pass all the arguments given to the script to this function. 
+# $* in bash is a special variable that holds all the arguments as a list.
 configure_source_and_destination $*
+
+# Remove the local directory of the repository if it exists from a previous run. 
+# This is to ensure that the script starts with a clean state.
 rm -rf "$REPO_NAME".git
+
+# Call the clone_from_source_ghec function to clone the repository from the source GitLab instance. 
+# It clones a bare repository (including all branches and tags) and then navigates into the cloned repository directory.
 clone_from_source_ghec
+
+# Call the push_to_dest_ghec function to push the cloned repository to the destination GitHub Enterprise Cloud instance. 
+# It first creates a new repository on the destination GitHub, then changes the origin of the local repository to point to this new GitHub repository, 
+# and finally pushes all the cloned data to the new repository.
 push_to_dest_ghec
 
+# Calculate the size of the repository and store it in the REPO_SIZE variable. 
+# du -sh calculates the size of the current directory and awk '{print $1}' extracts the size value.
 REPO_SIZE=$(du -sh | awk '{print $1}')
+
+# Remove the local repository directory after the migration is done.
 rm -rf "$REPO_NAME".git
 
+# Capture the end time of the script.
 END_TIME=$(date +%s)
+
+# Check if a log file name is provided. If not, generate a log file name based on the current timestamp.
 if [[ -z $MIGRATION_LOG_FILE_NAME ]]; then
     TIMESTAMP=$(date)
     TIMESTAMP=${TIMESTAMP// /_}
     TIMESTAMP=${TIMESTAMP//:/_}
     export MIGRATION_LOG_FILE_NAME="$TIMESTAMP.log"
 fi
+
+# Create a new log file with the name stored in MIGRATION_LOG_FILE_NAME.
 touch "$MIGRATION_LOG_FILE_NAME"
+
+# Log the name of the repository, its size, and the duration of the migration process to both the console and the log file. 
+# The tee -a command is used to append the output to the log file.
 echo "$REPO_NAME Size:$REPO_SIZE Duration:$((END_TIME - START_TIME))" | tee -a "$MIGRATION_LOG_FILE_NAME"
+
