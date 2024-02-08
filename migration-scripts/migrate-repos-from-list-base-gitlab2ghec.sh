@@ -45,7 +45,7 @@ migrate_multiple_repos() {
     # Extract the GitLab repository URL from the response
     SOURCE_REPO_URL=$(echo "$GITLAB_REPO_DETAILS" | jq -r '.[0].ssh_url_to_repo')
     # Migrate the repository using the migration script
-    ./migration-scripts/migrate-repos-base-ghec2ghec.sh "$GL_REPO_NAME" "$GL_USERNAME" "$GHEC_USER_PAT" "$GL_SOURCE_ORG_NAME" "$GHEC_DEST_ORG_NAME" "$GHEC_MAIN_BRANCH" "$SOURCE_REPO_URL"
+    ./migration-scripts/migrate-repo-gitlab2ghec.sh "$GL_REPO_NAME" "$GL_USERNAME" "$GHEC_USER_PAT" "$GL_SOURCE_ORG_NAME" "$GHEC_DEST_ORG_NAME" "$GHEC_MAIN_BRANCH" "$SOURCE_REPO_URL"
     MIGRATE_STATUS=$?
     if [ $MIGRATE_STATUS -ne 0 ]; then
       echo "Failed to migrate repository: $GL_REPO_NAME"
