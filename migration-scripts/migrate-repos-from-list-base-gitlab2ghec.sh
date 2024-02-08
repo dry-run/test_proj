@@ -7,7 +7,7 @@ help() {
   echo "Migrates multiple repos from Github Enterprise Server to Github Enterprise Cloud."
   echo "Repos list should be mentioned in 'repo-list' file"
   echo
-  echo "Usage: ./${0##*/} <GHEC_USER_NAME> <GHEC_USER_PAT> <GHEC_SOURCE_ORG_NAME> <GHEC_DEST_ORG_NAME> <GHEC_main_branch>"
+  echo "Usage: ./${0##*/} <GHEC_USER_NAME> <GHEC_USER_PAT> <GL_SOURCE_ORG_NAME> <GHEC_DEST_ORG_NAME> <GHEC_main_branch>"
 }
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$1" == "" ]; then
@@ -28,7 +28,7 @@ configure_source_and_destination() {
   # Github Enterprise Cloud config
   export GHEC_USER_NAME="$1"
   export GHEC_USER_PAT="$2"
-  export GHEC_SOURCE_ORG_NAME="$3"
+  export GL_SOURCE_ORG_NAME="$3"
   export GHEC_DEST_ORG_NAME="$4"
   export GHEC_MAIN_BRANCH="$5"
 }
@@ -45,7 +45,7 @@ migrate_multiple_repos() {
     # Extract the GitLab repository URL from the response
     SOURCE_REPO_URL=$(echo "$GITLAB_REPO_DETAILS" | jq -r '.[0].ssh_url_to_repo')
     # Migrate the repository using the migration script
-    ./migration-scripts/migrate-repos-base-ghec2ghec.sh "$GL_REPO_NAME" "$GHEC_USER_NAME" "$GHEC_USER_PAT" "$GHEC_SOURCE_ORG_NAME" "$GHEC_DEST_ORG_NAME" "$GHEC_MAIN_BRANCH" "$SOURCE_REPO_URL"
+    ./migration-scripts/migrate-repos-base-ghec2ghec.sh "$GL_REPO_NAME" "$GHEC_USER_NAME" "$GHEC_USER_PAT" "$GL_SOURCE_ORG_NAME" "$GHEC_DEST_ORG_NAME" "$GHEC_MAIN_BRANCH" "$SOURCE_REPO_URL"
     MIGRATE_STATUS=$?
     if [ $MIGRATE_STATUS -ne 0 ]; then
       echo "Failed to migrate repository: $GL_REPO_NAME"
