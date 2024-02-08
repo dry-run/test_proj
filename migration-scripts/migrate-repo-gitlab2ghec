@@ -1,10 +1,10 @@
 #!/bin/bash
 # Make sure this file is executable
-# chmod a+x ./migrate-git-repos-base-ghec2ghec.sh
+# chmod a+x ./migrate-repo-gitlab2ghec.sh
 
 help() {
     echo
-    echo "Migrates a repo from Git Lab Org1 to Github Enterprise Cloud Org2"
+    echo "Migrates a repo from a GitLab Organization to a Github Enterprise Cloud organization"
     echo
     echo "Usage: ./${0##*/} <GHEC_USER_NAME> <GHEC_USER_PAT> <GHEC_SOURCE_ORG_NAME> <GHEC_DEST_ORG_NAME> <GHEC_main_branch>"
 }
