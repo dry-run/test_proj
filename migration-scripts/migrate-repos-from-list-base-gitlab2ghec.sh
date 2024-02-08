@@ -27,7 +27,7 @@ configure_source_and_destination() {
 
   # Github Enterprise Cloud config
   export GL_USERNAME="$1"
-  export GHEC_USER_PAT="$2"
+  export GL_USER_PAT="$2"
   export GL_SOURCE_ORG_NAME="$3"
   export GHEC_DEST_ORG_NAME="$4"
   export GHEC_MAIN_BRANCH="$5"
