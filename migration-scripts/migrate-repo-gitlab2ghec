@@ -35,6 +35,10 @@ configure_source_and_destination() {
     export GL_PAT="$6"
     export GHEC_DEST_ORG_NAME="$7"
     export GHEC_MAIN_BRANCH="$8"
+
+    # Print the URLs of the source and destination repositories to the console for verification and record-keeping.
+    # The source URL is constructed using the GitLab username, organization name, and repository name.
+    # The destination URL is constructed using the GitHub username, organization name, and repository name.
     echo "Source: https://$GL_SOURCE_USER_NAME@gitlab.com/$GL_SOURCE_ORG_NAME/$GL_REPO_NAME.git"
     echo "Destination: https://$GHEC_USER_NAME@github.com/$GHEC_DEST_ORG_NAME/$GL_REPO_NAME.git"
 }
