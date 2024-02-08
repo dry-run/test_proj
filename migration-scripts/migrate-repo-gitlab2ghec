@@ -26,7 +26,7 @@ export $(grep -v '^#' ./migration-scripts/migration-config | xargs)
 
 configure_source_and_destination() {
 
-    # Github Enterprise Cloud config
+    # GL to GH Environment Variables
     export GL_REPO_NAME="$1"
     export GHEC_USER_NAME="$2"
     export GHEC_USER_PAT="$3"
