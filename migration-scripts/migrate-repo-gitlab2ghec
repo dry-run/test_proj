@@ -27,12 +27,12 @@ export $(grep -v '^#' ./migration-scripts/migration-config | xargs)
 configure_source_and_destination() {
 
     # Github Enterprise Cloud config
-    export GitLab_REPO_NAME="$1"
+    export GL_REPO_NAME="$1"
     export GHEC_USER_NAME="$2"
     export GHEC_USER_PAT="$3"
-    export GitLab_SOURCE_ORG_NAME="$4"
-    export GitLab_SOURCE_USER_NAME="$5"
-    export GitLab_PAT="$6"
+    export GL_SOURCE_ORG_NAME="$4"
+    export GL_SOURCE_USER_NAME="$5"
+    export GL_PAT="$6"
     export GHEC_DEST_ORG_NAME="$7"
     export GHEC_MAIN_BRANCH="$8"
     echo "Source: https://$GTLab_SOURCE_USER_NAME@gitlab.com/$GTLab_SOURCE_ORG_NAME/$REPO_NAME.git"
